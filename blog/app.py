@@ -1,6 +1,7 @@
 from flask import Flask
 
-from blog.views import users
+from blog.articles.views.articles import articles_app
+from blog.users.views.users import users_app
 
 
 def create_app() -> Flask:
@@ -10,4 +11,5 @@ def create_app() -> Flask:
 
 
 def register_blueprints(app: Flask):
-    app.register_blueprint(users.users_app, url_prefix='/users')
+    app.register_blueprint(users_app, url_prefix='/users')
+    app.register_blueprint(articles_app, url_prefix='/articles')
