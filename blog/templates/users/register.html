@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "../../../../../../Documents/Projects/Flask-Blog/blog/templates/macro/formhelpers.html" import render_field %}
+
+{% block title %}
+    Users register
+{% endblock %}
+{% block body %}
+    {% if errors %}
+        {% for error in errors %}
+            <div class="invalid-feedback">
+                {{ error }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        {% for field in ["first_name", "last_name", "email", "password", "confirm_password"] %}
+            {{ render_field(form[field]) }}
+        {% endfor %}
+        {{ form.submit(class="btn btn-primary mb-3") }}
+    </form>
+{% endblock %}
