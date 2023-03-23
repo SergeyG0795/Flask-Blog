@@ -1,26 +1,25 @@
-from blog.app import app
+import click
+from werkzeug.security import generate_password_hash
 
-from blog.models.database import db
+from .extensions import db
 
 
-@app.cli.command('init-db')
+@click.command("init-db", help="create all db")
 def init_db():
     from wsgi import app
-
-    db.create_all(app=app)
-    print('Done!')
-
-
-@app.cli.command('create-users')
-def create_users():
-    from blog.models import User
-    from wsgi import app
-
-    admin = User(username='admin', is_staff=True)
-    james = User(username='James')
     with app.app_context():
-        db.session.add(admin)
-        db.session.add(james)
+        db.create_all()
+
+
+@click.command("create-users", help="create users")
+def create_users():
+    from .models import User
+    from wsgi import app
+    with app.app_context():
+        db.session.add(
+            User(email="name@email.com", password=generate_password_hash("test"))
+        )
         db.session.commit()
 
-    print('Done!')
+
+COMMANDS = [init_db, create_users]
